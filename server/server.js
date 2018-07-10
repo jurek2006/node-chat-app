@@ -22,11 +22,12 @@ io.on('connection', (socket) => {
     // emitowanie wiadomości, że (inny) użytkownik się połączył
     socket.broadcast.emit('newMessage', generateMessage('New user joined', 'New user joined'));
 
-    socket.on('createMessage', message => {
+    socket.on('createMessage', (message, callback) => {
         console.log('create message', message);
 
         // emitowanie newMessage do wszystkich
         io.emit('newMessage', generateMessage(message.from, message.text));
+        callback('This is from the server');
     });
 
     socket.on('disconnect', () => {
