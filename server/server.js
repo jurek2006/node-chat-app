@@ -20,7 +20,7 @@ io.on('connection', (socket) => {
     socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat'));
 
     // emitowanie wiadomości, że (inny) użytkownik się połączył
-    socket.broadcast.emit('newMessage', generateMessage('New user joined', 'New user joined'));
+    socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
     socket.on('createMessage', (message, callback) => {
         console.log('create message', message);
