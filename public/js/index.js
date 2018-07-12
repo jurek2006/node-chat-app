@@ -13,7 +13,18 @@ socket.on('newMessage', function (message){
     console.log('New message', message);
     const li = jQuery('<li></li>');
     li.text(`${message.from}: ${message.text}`);
+    jQuery('#messages').append(li);
+});
 
+// nasłuchiwanie eventu newLocationMessage
+socket.on('newLocationMessage', function (message) {
+    console.log('New location message', message);
+    const li = jQuery('<li></li>');
+    const a = jQuery('<a target="_blank">Moja aktualna lokalizacja</a>');
+    li.text(`${message.from}: `);
+    a.attr('href', message.url);
+
+    li.append(a);
     jQuery('#messages').append(li);
 });
 
