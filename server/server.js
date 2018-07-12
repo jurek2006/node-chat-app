@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
 
         // emitowanie newMessage do wszystkich
         io.emit('newMessage', generateMessage(message.from, message.text));
-        callback('This is from the server');
+        callback();
     });
 
     socket.on('disconnect', () => {
