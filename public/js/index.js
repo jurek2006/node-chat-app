@@ -26,3 +26,22 @@ jQuery('#message-form').on('submit', function (e) {
         console.log('Got it', data);
     })
 });
+
+const locationButton = jQuery('#send-location');
+locationButton.on('click', function () {
+    // sprawdzenie czy geolokacja obsługiwana - jeśli nie - przerwanie skryptu i wyświetlenie alertu
+
+    
+    if(!navigator.geolocation){
+        return alert('Geolokacja nieobsługiwana przez Twoją przeglądarkę');
+    }
+
+    navigator.geolocation.getCurrentPosition(function (position) {
+        socket.emit('createLocationMessage', {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        })
+    }), function () {
+        alert('Niemożliwe pobranie lokalizacji');
+    }
+})

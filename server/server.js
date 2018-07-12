@@ -33,6 +33,10 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('Client disconnected');
     });
+
+    socket.on('createLocationMessage', (coords) => {
+        io.emit('newMessage', generateMessage('Admin', `${coords.latitude}, ${coords.longitude}`));
+    });
 });
 
 if(!module.parent){
