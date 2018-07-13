@@ -11,21 +11,27 @@ socket.on('disconnect', function () {
 // nasłuchiwanie eventu newMessage z serwera
 socket.on('newMessage', function (message){
     const formattedTime = moment(message.createdAt).format('h:mm a');
-    const li = jQuery('<li></li>');
-    li.text(`${message.from} ${formattedTime}: ${message.text}`);
-    jQuery('#messages').append(li);
+    const template = jQuery('#message-template').html();
+    const html = Mustache.render(template, {
+        text: message.text,
+        from: message.from,
+        createdAt: formattedTime
+    });
+
+    jQuery('#messages').append(html);
 });
 
 // nasłuchiwanie eventu newLocationMessage
 socket.on('newLocationMessage', function (message) {
     const formattedTime = moment(message.createdAt).format('h:mm a');
-    const li = jQuery('<li></li>');
-    const a = jQuery('<a target="_blank">Moja aktualna lokalizacja</a>');
-    li.text(`${message.from} ${formattedTime}: `);
-    a.attr('href', message.url);
+    const template = jQuery('#location-message-template').html();
+    const html = Mustache.render(template, {
+        from: message.from,
+        createdAt: formattedTime,
+        url: message.url
+    });
 
-    li.append(a);
-    jQuery('#messages').append(li);
+    jQuery('#messages').append(html);
 });
 
 jQuery('#message-form').on('submit', function (e) {
