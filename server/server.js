@@ -17,18 +17,18 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log('New user connected');
 
-    // emitowanie wiadomości powitalnej do połączonego użytkownika
-    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat'));
-
-    // emitowanie wiadomości, że (inny) użytkownik się połączył
-    socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
-
     socket.on('join', (params, callback) => {
         if(!isRealString(params.name) || !isRealString(params.room)){
             callback('Name and room are required');
-        } else {
-            callback();
-        }
+        } 
+        socket.join(params.room);
+            
+        // emitowanie wiadomości powitalnej do połączonego użytkownika
+        socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat'));
+
+        // emitowanie wiadomości, że (inny) użytkownik się połączył
+        socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} joined`));
+        callback();
     });
 
     socket.on('createMessage', (message, callback) => {
