@@ -13,7 +13,7 @@ function scrollToBottom() {
 
     if(clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight){
         messages.scrollTop(scrollHeight);
-    }
+    } 
 }
 
 socket.on('connect', function (){
@@ -76,7 +76,6 @@ jQuery('#message-form').on('submit', function (e) {
 
     const messageTextBox = jQuery('[name=message]');
     socket.emit('createMessage', {
-        from: 'User',
         text: messageTextBox.val()
     }, function (data) {
         // wyczyszczenie pola tekst po prawidłowym wysłaniu wiadomości
