@@ -23,17 +23,18 @@ io.on('connection', (socket) => {
         if(!isRealString(params.name) || !isRealString(params.room)){
             callback('Name and room are required');
         } 
-        socket.join(params.room);
+        const room = params.room.toLowerCase();
+        socket.join(room);
         users.removeUser(socket.id);
-        users.addUser(socket.id, params.name, params.room);
+        users.addUser(socket.id, params.name, room);
 
-        io.to(params.room).emit('updateUsersList', users.getUserList(params.room));
+        io.to(room).emit('updateUsersList', users.getUserList(room));
             
         // emitowanie wiadomości powitalnej do połączonego użytkownika
         socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat'));
 
         // emitowanie wiadomości, że (inny) użytkownik się połączył
-        socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} joined`));
+        socket.broadcast.to(room).emit('newMessage', generateMessage('Admin', `${params.name} joined`));
         callback();
     });
 
