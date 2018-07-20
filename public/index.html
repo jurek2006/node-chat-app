@@ -18,13 +18,28 @@
                 <input type="text" name="name" autofocus>
             </div>
             <div class="form-field">
-                    <label>Room name</label> 
-                    <input type="text" name="room">
+                <label>Room name</label> 
+                
+                <select id="room-select" name="room">
+                    <option value="" >utwórz nowy lub wybierz</option>
+                </select>
+            </div>
+            <div class="form-field">
+                    <input type="text" id="new-room-input" name="newRoom" placeholder="nowy pokój">
             </div>
             <div class="form-field">
                 <button>Join</button>
             </div>
         </form>
     </div>
+
+    <script id="select-room-template" type="text/template">
+        <option value="{{value}}">{{optionName}}</option>
+    </script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/libs/jquery-3.3.1.min.js"></script>
+    <script src="/js/libs/mustache.js"></script>
+    <script src="/js/index.js"></script>
 </body>
 </html>

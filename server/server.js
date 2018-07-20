@@ -20,10 +20,12 @@ io.on('connection', (socket) => {
     console.log('New user connected');
 
     socket.on('join', (params, callback) => {
-        if(!isRealString(params.name) || !isRealString(params.room)){
+        if(!isRealString(params.name) || (!isRealString(params.room) && !isRealString(params.newRoom))){
             callback('Name and room are required');
         } 
-        const room = params.room.toLowerCase();
+        let room = params.room || params.newRoom;
+        room = room.toLowerCase();
+
         socket.join(room);
         users.removeUser(socket.id);
         users.addUser(socket.id, params.name, room);
@@ -63,6 +65,10 @@ io.on('connection', (socket) => {
         if(user){
             io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
         }
+    });
+
+    socket.on('getRoomsList', callback => {
+        callback(users.getRoomsList());
     });
 });
 
