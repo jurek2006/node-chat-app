@@ -23,8 +23,15 @@ io.on('connection', (socket) => {
         if(!isRealString(params.name) || (!isRealString(params.room) && !isRealString(params.newRoom))){
             callback('Name and room are required');
         } 
+
+        
         let room = params.room || params.newRoom;
         room = room.toLowerCase();
+
+        // sprawdzenie czy imię nie jest już zajętę w danym pokoju. Jeśli tak, to klient wyświetla komunikat a serwer dalej się nie łączy
+        if(users.getUserList(room).map(user => user.toLowerCase()).find(user => user === params.name.toLowerCase())){
+            callback('Imię już używane w wybranym pokoju. Wybierz inne');
+        }
 
         socket.join(room);
         users.removeUser(socket.id);
